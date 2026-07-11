@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnSaludar: Button
     private lateinit var btnLimpiar: Button
     private lateinit var etNombre: EditText
+    private lateinit var etApellido: EditText
     private lateinit var tvSaludo: TextView
     private lateinit var tvMensaje: TextView
 
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         btnSaludar = findViewById(R.id.btnSaludar)
         btnLimpiar = findViewById(R.id.btnLimpiar)
         etNombre = findViewById(R.id.etNombre)
+        etApellido = findViewById(R.id.etApellido)
         tvSaludo = findViewById(R.id.tvSaludo)
         tvMensaje = findViewById(R.id.tvMensaje)
 
@@ -37,15 +40,22 @@ class MainActivity : AppCompatActivity() {
         btnSaludar.setOnClickListener {
 
             val nombre = etNombre.text.toString().trim()
+            val apellido = etApellido.text.toString().trim()
 
-            if (nombre.isEmpty()) {
-                mostrarToast("Error, el campo nombre está vacío.")
+            if (nombre.isEmpty() || apellido.isEmpty()) {
+                mostrarToast("Debe ingresar el nombre y el apellido.")
             } else {
-                val saludo = "Hola, $nombre"
-                val mensaje = "Bienvenido al laboratorio 2 de DSM441."
+
+                val hora = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+                val saludo = if (hora in 6..17) {
+                    "Hola, buenos días $nombre $apellido"
+                } else {
+                    "Hola, buenas noches $nombre $apellido"
+                }
 
                 tvSaludo.text = saludo
-                tvMensaje.text = mensaje
+                tvMensaje.text = "Bienvenido al laboratorio 2 de DSM441."
 
                 mostrarToast("Saludo generado exitosamente.")
             }
